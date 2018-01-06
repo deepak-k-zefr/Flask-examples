@@ -259,3 +259,45 @@ Date: Sat, 06 Jan 2018 06:45:49 GMT
   ]
 }
 ```
+
+UPDATE using PUT request:
+
+```
+@app.route('/payroll/api/v1.0/employees/<int:employee_id>', methods=['PUT'])
+def update_task(employee_id):
+    employee = [employee for employee in employees if employee['id'] == employee_id]
+    if len(employee) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'name' in request.json and type(request.json['name']) != str:
+        abort(400)
+    if 'designation' in request.json and type(request.json['designation']) is not str:
+        abort(400)
+    if 'department' in request.json and type(request.json['department']) is not str:
+        abort(400)
+
+    employee[0]['name'] = request.json.get('name', employee[0]['name'])
+    employee[0]['designation'] = request.json.get('designation', employee[0]['designation'])
+    employee[0]['department'] = request.json.get('department', employee[0]['department'])
+    return jsonify({'employee': employee[0]})```
+
+```
+
+
+curl -i -H "Content-Type: application/json" -X PUT -d '{"designation":"physicist"}' http://127.0.0.1:5000/payroll/api/v1.0/employees/3
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 121
+Server: Werkzeug/0.11.15 Python/3.6.1
+Date: Sat, 06 Jan 2018 07:05:54 GMT
+
+{
+  "employee": {
+    "department": "", 
+    "designation": "physicist", 
+    "id": 3, 
+    "name": "Nikola Tesla"
+  }
+}
+```
