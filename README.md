@@ -79,7 +79,7 @@ python app.py
 ### Implementing RESTful services in Python and Flask
 The clients of our web service will be asking the service to add, remove and modify details about employees, so clearly we need to have a way to store these details. The obvious way to do that is to build a small database, here we use a list of dictionaries instead.
 
-
+```
 tasks = [
     {
         'id': 1,
@@ -94,12 +94,14 @@ tasks = [
         'done': False
     }
 ]
-
+```
 
 http://127.0.0.1:5000/payroll/api/v1.0/employees
 
 RESPONSE:
-```{
+
+```
+{
   "employees": [
     {
       "age": 64, 
@@ -114,9 +116,11 @@ RESPONSE:
       "name": "Geoff Hinton"
     }
   ]
-}```
+}
+```
 
-```curl -i http://127.0.0.1:5000/payroll/api/v1.0/employees
+```
+curl -i http://127.0.0.1:5000/payroll/api/v1.0/employees
 HTTP/1.0 200 OK
 Content-Type: application/json
 Content-Length: 278
@@ -138,9 +142,11 @@ Date: Sat, 06 Jan 2018 06:08:20 GMT
       "name": "Geoff Hinton"
     }
   ]
-}```
+}
+```
 
 Retrieve data of an entry based on the ID of the entry.
+
 ```
 curl -i http://127.0.0.1:5000/payroll/api/v1.0/employees/1
 HTTP/1.0 200 OK
@@ -149,16 +155,6 @@ Content-Length: 143
 Server: Werkzeug/0.11.15 Python/3.6.1
 Date: Sat, 06 Jan 2018 06:25:11 GMT
 
-
-When we ask for resource id #2 we get it, but when we ask for #3 we get back the 404 error. Below is a method to handle the error gracefully:
-
-```
-from flask import make_response
-
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
- ```
 {
   "employees": {
     "age": 64, 
@@ -169,6 +165,20 @@ def not_found(error):
   }
 }
 ```
+
+
+
+When we ask for resource id #2 we get it, but when we ask for #3 we get back the 404 error. Below is a method to handle the error gracefully:
+
+
+
+```
+from flask import make_response
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+ ```
 
 Next in our list is the POST method, which we will use to insert a new item in our task database:
 
