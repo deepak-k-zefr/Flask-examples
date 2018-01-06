@@ -4,9 +4,6 @@ app=Flask(__name__)
 ## GET  Requests
 
 ### Step 1: Hello
-@app.route("/")
-def hello():
-	return "Hello World"
 
 @app.route("/")
 def hello():
